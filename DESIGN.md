@@ -39,6 +39,14 @@ This document explains the architecture and design decisions for the ATS form au
 - Globex: Captures from `#globex-ref` element
 - Returns `ApplicationResult` with success status and confirmation ID
 
+**Dynamic Resume Generation (Bonus Feature)**
+- Generates ATS-friendly resume PDF for each company before submission
+- Uses Gemini API (2.5-flash model) to generate LaTeX code from UserProfile
+- Compiles LaTeX to PDF using pdflatex
+- Automatically deletes resume after successful submission
+- Falls back to sample resume if generation fails
+- Supports multiple API keys with automatic rotation on rate limits
+
 ---
 
 ## Part 2: Architecture
@@ -107,6 +115,14 @@ async canHandle(page: Page, url: string): Promise<boolean> {
 - `hoverAndClick()` - Hover before clicking
 - `readingPause()` - Simulated reading pauses
 - `smoothScrollTo()` - Smooth scrolling
+
+**Resume Generator (`resume-generator.ts`):**
+- `generateResume()` - Generates ATS-friendly resume PDF using Gemini API
+- `deleteResume()` - Cleans up generated resume after submission
+- Gemini API integration with multiple API key support
+- Automatic model fallback (gemini-2.5-pro → gemini-2.0-flash → gemini-2.5-flash)
+- LaTeX compilation to PDF with error handling
+- Company-specific resume customization
 
 #### Platform-Specific Logic (in `src/platforms/`)
 
@@ -231,7 +247,11 @@ assessment-1/
 │   │   └── registry.ts          # Platform detection and routing
 │   └── utils/
 │       ├── human-behavior.ts     # Human-like behavior utilities
-│       └── field-fillers.ts      # Shared field-filling utilities
+│       ├── field-fillers.ts      # Shared field-filling utilities
+│       └── resume-generator.ts   # Dynamic resume generation with Gemini API
+├── fixtures/
+│   └── sample-resume.pdf        # Fallback resume (or generated resume)
+└── .env                          # Gemini API keys (GEMINI_API_1, GEMINI_API_2, ...)
 ```
 
 ---
@@ -261,6 +281,7 @@ assessment-1/
 - Working automation (both forms submit successfully)
 - Human-like behavior (all 5 behaviors implemented)
 - Code readability (well-commented, clear structure)
+- Bonus feature: Dynamic resume generation with AI integration
 
 ---
 
@@ -273,6 +294,18 @@ assessment-1/
 - Required careful timing and waiting logic
 
 **Solution:** Used `waitForFunction()` to wait for results to appear, then iterated through results to find match by text content.
+
+**Resume Generation Challenges:**
+- Gemini API model availability on free tier (gemini-2.5-pro not available)
+- LaTeX compilation errors from AI-generated code (mismatched begin/end tags)
+- PDF file renaming and cleanup
+- Multiple API key rotation with detailed logging
+
+**Solutions:**
+- Implemented automatic model fallback (tries 2.5-pro, then 2.0-flash, then 2.5-flash)
+- Handle pdflatex non-zero exit codes (PDF still generated despite LaTeX errors)
+- Robust file renaming with copy fallback
+- Detailed logging for API key rotation and model selection
 
 ---
 
@@ -288,6 +321,28 @@ assessment-1/
 4. Built Acme handler, tested, fixed issues
 5. Built Globex handler, tested, fixed issues
 6. Refined human-like behavior throughout
+7. Added resume generation feature with Gemini API integration
+8. Implemented LaTeX compilation and PDF generation
+9. Added API key rotation and model fallback logic
+
+---
+
+## Bonus Features Implemented
+
+**Dynamic Resume Generation:**
+- Generates company-specific ATS-friendly resumes using Gemini API
+- LaTeX-based resume generation with professional formatting
+- Automatic PDF compilation and cleanup
+- Multiple API key support with automatic rotation
+- Model fallback for free tier compatibility
+- Detailed logging for debugging and monitoring
+
+**Key Features:**
+- Resume generated before each company submission
+- Tailored content based on company name
+- Uses exact LaTeX template format (1-page constraint)
+- Automatic cleanup after submission
+- Graceful fallback if generation fails
 
 ---
 
@@ -299,5 +354,6 @@ The system successfully meets all requirements:
 - All human-like behaviors implemented
 - Easy to add new platforms
 - Well-structured, maintainable code
+- Bonus: Dynamic resume generation with AI
 
-The architecture demonstrates solid software engineering principles while remaining practical and working correctly.
+The architecture demonstrates solid software engineering principles while remaining practical and working correctly. The addition of AI-powered resume generation adds significant value and demonstrates initiative beyond the basic requirements.

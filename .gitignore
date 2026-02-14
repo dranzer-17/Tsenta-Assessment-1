@@ -4,3 +4,10 @@ test-results/
 playwright-report/
 .DS_Store
 *.log
+.env
+.env.local
+fixtures/sample-resume.pdf
+fixtures/resume.tex
+fixtures/*.aux
+fixtures/*.log
+fixtures/*.out

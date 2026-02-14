@@ -1,7 +1,9 @@
+import "dotenv/config";
 import { chromium } from "playwright";
 import { sampleProfile } from "./profile";
 import type { ApplicationResult, UserProfile } from "./types";
 import { PlatformRegistry } from "./platforms/registry";
+import { generateResume, deleteResume } from "./utils/resume-generator";
 
 /**
  * ============================================================
@@ -26,13 +28,26 @@ const BASE_URL = "http://localhost:3939";
 
 async function applyToJob(
   url: string,
-  profile: UserProfile
+  profile: UserProfile,
+  companyName: string
 ): Promise<ApplicationResult> {
   const browser = await chromium.launch({ headless: false });
   const context = await browser.newContext();
   const page = await context.newPage();
 
+  let resumeGenerated = false;
+
   try {
+    // Generate resume for this company before starting
+    try {
+      await generateResume(profile, companyName);
+      resumeGenerated = true;
+    } catch (error) {
+      console.warn(`  Warning: Could not generate resume: ${error instanceof Error ? error.message : String(error)}`);
+      console.log(`  Using fallback resume if available...`);
+      // Continue with fallback resume
+    }
+
     // Navigate to the form
     await page.goto(url, { waitUntil: "networkidle" });
     await page.waitForLoadState("domcontentloaded");
@@ -43,6 +58,10 @@ async function applyToJob(
 
     if (!handler) {
       await browser.close();
+      // Clean up resume if generated
+      if (resumeGenerated) {
+        deleteResume();
+      }
       return {
         success: false,
         error: `No handler found for URL: ${url}`,
@@ -57,9 +76,19 @@ async function applyToJob(
     await new Promise((resolve) => setTimeout(resolve, 2000));
 
     await browser.close();
+
+    // Delete resume after successful submission
+    if (resumeGenerated) {
+      deleteResume();
+    }
+
     return result;
   } catch (error) {
     await browser.close();
+    // Clean up resume on error
+    if (resumeGenerated) {
+      deleteResume();
+    }
     return {
       success: false,
       error: error instanceof Error ? error.message : String(error),
@@ -79,7 +108,7 @@ async function main() {
     console.log(`\n--- Applying to ${target.name} ---`);
 
     try {
-      const result = await applyToJob(target.url, sampleProfile);
+      const result = await applyToJob(target.url, sampleProfile, target.name);
 
       if (result.success) {
         console.log(`  Application submitted!`);

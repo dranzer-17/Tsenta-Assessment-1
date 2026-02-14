@@ -44,8 +44,27 @@ export class AcmeHandler implements FormHandler {
       await this.fillStep4(page);
       await this.submitForm(page);
 
-      // Wait for success page and extract confirmation ID
-      await page.waitForSelector("#confirmation-id", { timeout: 10000 });
+      // Wait for success page to be displayed (the form hides and success page shows)
+      await page.waitForFunction(
+        () => {
+          const successPage = document.getElementById("success-page");
+          const form = document.getElementById("application-form");
+          return successPage && 
+                 successPage.style.display !== "none" && 
+                 (!form || form.style.display === "none");
+        },
+        { timeout: 10000 }
+      );
+      
+      // Wait for confirmation ID to be populated
+      await page.waitForFunction(
+        () => {
+          const el = document.getElementById("confirmation-id");
+          return el && el.textContent && el.textContent.trim().length > 0;
+        },
+        { timeout: 5000 }
+      );
+      
       const confirmationId = await page.textContent("#confirmation-id");
 
       return {

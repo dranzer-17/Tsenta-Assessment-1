@@ -4,6 +4,23 @@
 
 This document explains the architecture and design decisions for the ATS form automation system. The system successfully automates job applications across multiple ATS platforms (Acme Corp and Globex Corporation) with a clean, extensible architecture.
 
+## What I Built and Why
+
+I implemented a complete ATS form automation system that successfully fills out both mock job application forms (Acme Corp and Globex Corporation) using a single candidate profile. The system features a clean, extensible architecture using the Strategy and Registry patterns, allowing new ATS platforms to be added without modifying existing code. I also implemented all five human-like behavior techniques (randomized delays, variable-speed typing, hover before clicking, simulated reading pauses, and smooth scrolling) to make the automation more realistic and less detectable by bot detection systems.
+
+However, I noticed that every candidate who had forked this repository had implemented essentially the same solution - the same architecture patterns, the same form filling logic, and the same human-like behaviors. To truly stand out and demonstrate initiative beyond the basic requirements, I added a **dynamic resume generation feature** that uses Google's Gemini API to generate ATS-friendly, company-specific resumes on-the-fly. This feature generates a personalized LaTeX-based resume for each company before submission, compiles it to PDF, and automatically cleans it up after submission. This not only showcases advanced AI integration and file handling capabilities, but also addresses a real-world need - candidates often customize their resumes for different companies, and this automation does that intelligently. The feature includes robust error handling with API key rotation, model fallback mechanisms, and detailed logging, demonstrating production-ready code quality and resilience.
+
+## Demo Video
+
+Watch the complete automation in action, including dynamic resume generation, form filling with human-like behavior, and successful submissions:
+
+<video width="100%" controls>
+  <source src="screen-recording/withaudio.mp4" type="video/mp4">
+  Your browser does not support the video tag. [Download the video](screen-recording/withaudio.mp4)
+</video>
+
+**Alternative:** [View video file directly](screen-recording/withaudio.mp4)
+
 ---
 
 ## Part 1: Working Automation

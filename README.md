@@ -5,6 +5,19 @@
 
 ---
 
+## Demo Video
+
+Watch the automation in action! This video demonstrates the complete automation flow, including dynamic resume generation, form filling, and submission for both Acme Corp and Globex Corporation.
+
+<video width="100%" controls>
+  <source src="screen-recording/withaudio.mp4" type="video/mp4">
+  Your browser does not support the video tag. [Download the video](screen-recording/withaudio.mp4)
+</video>
+
+**Alternative:** [View video file directly](screen-recording/withaudio.mp4)
+
+---
+
 ## Context
 
 At Tsenta, we automate job applications across dozens of ATS (Applicant Tracking System) platforms, Greenhouse, Lever, Workday, and more. Each platform has different HTML structures, form patterns, and interaction models, but the *data* being entered is the same: name, email, resume, skills, etc.

@@ -312,7 +312,7 @@ assessment-1/
 ## AI Tools Used
 
 - **Cursor AI:** Used for code generation, refactoring, and debugging
-- **Claude Code:** I used it t generate the outlie and overview of how will I implement the solution
+- **Claude Code:** I used it to generate the outlie and overview of how will I implement the solution
 
 **Workflow:**
 1. Read HTML forms to understand structure

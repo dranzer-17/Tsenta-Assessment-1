@@ -1,0 +1,915 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Globex Corporation - Apply Now</title>
+  <style>
+    /* Globex uses a completely different design language */
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body {
+      font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+      background: #e8eaf6;
+      color: #212121;
+      line-height: 1.5;
+    }
+
+    .globex-wrapper {
+      max-width: 800px;
+      margin: 0 auto;
+      padding: 20px;
+    }
+
+    .globex-header {
+      background: linear-gradient(135deg, #1565c0, #0d47a1);
+      color: white;
+      padding: 32px;
+      border-radius: 12px 12px 0 0;
+      text-align: center;
+    }
+
+    .globex-header h1 { font-size: 28px; margin-bottom: 4px; }
+    .globex-header .role-name { font-size: 18px; opacity: 0.9; }
+    .globex-header .dept { font-size: 13px; opacity: 0.7; margin-top: 4px; }
+
+    .application-form {
+      background: white;
+      border-radius: 0 0 12px 12px;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+    }
+
+    /* Accordion sections instead of multi-step */
+    .application-section {
+      border-bottom: 1px solid #e0e0e0;
+    }
+
+    .section-header {
+      padding: 18px 24px;
+      background: #fafafa;
+      cursor: pointer;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      user-select: none;
+      transition: background 0.2s;
+    }
+
+    .section-header:hover { background: #f0f0f0; }
+
+    .section-header h2 {
+      font-size: 16px;
+      font-weight: 600;
+      color: #1565c0;
+    }
+
+    .section-header .toggle-icon {
+      font-size: 20px;
+      transition: transform 0.2s;
+      color: #999;
+    }
+
+    .section-header.open .toggle-icon { transform: rotate(180deg); }
+
+    .section-body {
+      padding: 0 24px;
+      max-height: 0;
+      overflow: hidden;
+      transition: max-height 0.3s ease, padding 0.3s ease;
+    }
+
+    .section-body.open {
+      padding: 20px 24px;
+      max-height: 2000px;
+    }
+
+    /* Form fields - different class names & structure from Acme */
+    .field-row {
+      margin-bottom: 16px;
+    }
+
+    .field-row.inline {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+    }
+
+    .field-block {
+      margin-bottom: 16px;
+    }
+
+    .field-block .field-label {
+      display: block;
+      font-size: 13px;
+      font-weight: 600;
+      color: #555;
+      margin-bottom: 4px;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    .field-block .field-label .req {
+      color: #d32f2f;
+      margin-left: 2px;
+    }
+
+    .field-block input[type="text"],
+    .field-block input[type="email"],
+    .field-block input[type="tel"],
+    .field-block input[type="url"],
+    .field-block input[type="date"],
+    .field-block input[type="number"],
+    .field-block select,
+    .field-block textarea {
+      width: 100%;
+      padding: 10px 12px;
+      border: 2px solid #e0e0e0;
+      border-radius: 6px;
+      font-size: 14px;
+      font-family: inherit;
+      transition: border-color 0.2s;
+    }
+
+    .field-block input:focus,
+    .field-block select:focus,
+    .field-block textarea:focus {
+      outline: none;
+      border-color: #1565c0;
+    }
+
+    .field-block textarea { min-height: 80px; resize: vertical; }
+
+    .field-error {
+      display: none;
+      font-size: 12px;
+      color: #d32f2f;
+      margin-top: 3px;
+    }
+
+    .field-block.invalid input,
+    .field-block.invalid select,
+    .field-block.invalid textarea {
+      border-color: #d32f2f;
+    }
+
+    .field-block.invalid .field-error { display: block; }
+
+    /* Chips for multi-select skills (different from checkboxes) */
+    .chip-select {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+
+    .chip {
+      padding: 6px 14px;
+      border: 2px solid #e0e0e0;
+      border-radius: 20px;
+      font-size: 13px;
+      cursor: pointer;
+      transition: all 0.15s;
+      user-select: none;
+    }
+
+    .chip:hover { border-color: #1565c0; }
+
+    .chip.selected {
+      background: #1565c0;
+      border-color: #1565c0;
+      color: white;
+    }
+
+    /* Toggle switches instead of radio buttons */
+    .toggle-field {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 12px;
+    }
+
+    .toggle-switch {
+      position: relative;
+      width: 48px;
+      height: 26px;
+      background: #ccc;
+      border-radius: 13px;
+      cursor: pointer;
+      transition: background 0.2s;
+    }
+
+    .toggle-switch.active { background: #1565c0; }
+
+    .toggle-switch::after {
+      content: "";
+      position: absolute;
+      top: 3px;
+      left: 3px;
+      width: 20px;
+      height: 20px;
+      background: white;
+      border-radius: 50%;
+      transition: transform 0.2s;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.2);
+    }
+
+    .toggle-switch.active::after { transform: translateX(22px); }
+
+    .toggle-label { font-size: 14px; color: #333; }
+
+    /* Slider for expected salary */
+    .salary-slider-container {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .salary-slider-container input[type="range"] {
+      flex: 1;
+      accent-color: #1565c0;
+    }
+
+    .salary-display {
+      font-weight: 600;
+      font-size: 14px;
+      color: #1565c0;
+      min-width: 80px;
+      text-align: right;
+    }
+
+    /* Resume drop zone - different from Acme */
+    .resume-dropzone {
+      border: 2px dashed #bbb;
+      border-radius: 8px;
+      padding: 30px;
+      text-align: center;
+      background: #fafafa;
+      position: relative;
+      transition: all 0.2s;
+    }
+
+    .resume-dropzone:hover { border-color: #1565c0; background: #e8eaf6; }
+    .resume-dropzone.uploaded { border-color: #2e7d32; background: #e8f5e9; }
+
+    .resume-dropzone input[type="file"] {
+      position: absolute;
+      inset: 0;
+      opacity: 0;
+      cursor: pointer;
+    }
+
+    .resume-dropzone .dz-text { color: #777; font-size: 14px; }
+    .resume-dropzone .dz-filename { margin-top: 8px; font-weight: 600; color: #1565c0; }
+
+    /* Submit area */
+    .submit-area {
+      padding: 24px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 16px;
+    }
+
+    .consent-row {
+      display: flex;
+      align-items: flex-start;
+      gap: 8px;
+      font-size: 13px;
+      color: #666;
+      max-width: 500px;
+    }
+
+    .consent-row input[type="checkbox"] { margin-top: 2px; }
+
+    #globex-submit {
+      background: #1565c0;
+      color: white;
+      border: none;
+      padding: 14px 48px;
+      border-radius: 8px;
+      font-size: 16px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: background 0.2s;
+    }
+
+    #globex-submit:hover { background: #0d47a1; }
+    #globex-submit:disabled { background: #999; cursor: not-allowed; }
+
+    /* Confirmation */
+    .globex-confirmation {
+      padding: 60px 24px;
+      text-align: center;
+      display: none;
+    }
+
+    .globex-confirmation .check-circle {
+      width: 64px;
+      height: 64px;
+      background: #2e7d32;
+      color: white;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 32px;
+      margin: 0 auto 20px;
+    }
+
+    .globex-confirmation h2 { color: #2e7d32; margin-bottom: 8px; }
+    .globex-confirmation p { color: #666; margin-bottom: 4px; }
+
+    .globex-confirmation .ref-number {
+      margin-top: 20px;
+      padding: 10px 20px;
+      background: #e8eaf6;
+      border-radius: 6px;
+      font-family: monospace;
+      font-size: 15px;
+      display: inline-block;
+    }
+
+    /* Conditional sections */
+    .conditional-block {
+      display: none;
+      margin-top: 12px;
+      padding: 12px;
+      background: #f5f5f5;
+      border-radius: 6px;
+    }
+
+    .conditional-block.visible { display: block; }
+
+    /* Async typeahead */
+    .async-typeahead {
+      position: relative;
+    }
+
+    .typeahead-spinner {
+      display: none;
+      position: absolute;
+      right: 12px;
+      top: 50%;
+      transform: translateY(-50%);
+      width: 16px;
+      height: 16px;
+      border: 2px solid #e0e0e0;
+      border-top-color: #1565c0;
+      border-radius: 50%;
+      animation: spin 0.6s linear infinite;
+    }
+
+    .typeahead-spinner.loading { display: block; }
+
+    @keyframes spin { to { transform: translateY(-50%) rotate(360deg); } }
+
+    .typeahead-results {
+      position: absolute;
+      top: 100%;
+      left: 0;
+      right: 0;
+      background: white;
+      border: 2px solid #1565c0;
+      border-top: none;
+      border-radius: 0 0 6px 6px;
+      list-style: none;
+      max-height: 200px;
+      overflow-y: auto;
+      display: none;
+      z-index: 200;
+      box-shadow: 0 6px 16px rgba(0,0,0,0.12);
+    }
+
+    .typeahead-results.open { display: block; }
+
+    .typeahead-results li {
+      padding: 10px 12px;
+      font-size: 14px;
+      cursor: pointer;
+      transition: background 0.1s;
+    }
+
+    .typeahead-results li:hover { background: #e8eaf6; }
+    .typeahead-results li.highlighted { background: #e8eaf6; }
+
+    .typeahead-no-results {
+      padding: 10px 12px;
+      font-size: 13px;
+      color: #999;
+      font-style: italic;
+    }
+
+    .globex-footer {
+      text-align: center;
+      padding: 16px;
+      font-size: 12px;
+      color: #999;
+    }
+  </style>
+</head>
+<body>
+  <div class="globex-wrapper">
+    <div class="globex-header">
+      <h1>Globex Corporation</h1>
+      <div class="role-name">Frontend Engineer</div>
+      <div class="dept">Engineering &mdash; Remote</div>
+    </div>
+
+    <form class="application-form" id="globex-form" novalidate>
+
+      <!-- Section 1: Contact Details (accordion) -->
+      <div class="application-section" data-section="contact">
+        <div class="section-header open" onclick="toggleSection(this)">
+          <h2>Contact Details</h2>
+          <span class="toggle-icon">&#9660;</span>
+        </div>
+        <div class="section-body open">
+          <div class="field-row inline">
+            <div class="field-block">
+              <label class="field-label" for="g-fname">First Name <span class="req">*</span></label>
+              <input type="text" id="g-fname" name="firstName" data-required="true" />
+              <div class="field-error">First name is required</div>
+            </div>
+            <div class="field-block">
+              <label class="field-label" for="g-lname">Last Name <span class="req">*</span></label>
+              <input type="text" id="g-lname" name="lastName" data-required="true" />
+              <div class="field-error">Last name is required</div>
+            </div>
+          </div>
+
+          <div class="field-block">
+            <label class="field-label" for="g-email">Email Address <span class="req">*</span></label>
+            <input type="email" id="g-email" name="email" data-required="true" />
+            <div class="field-error">Valid email is required</div>
+          </div>
+
+          <div class="field-block">
+            <label class="field-label" for="g-phone">Phone <span class="req">*</span></label>
+            <input type="tel" id="g-phone" name="phone" data-required="true" />
+            <div class="field-error">Phone number is required</div>
+          </div>
+
+          <div class="field-block">
+            <label class="field-label" for="g-city">City <span class="req">*</span></label>
+            <input type="text" id="g-city" name="city" data-required="true" />
+            <div class="field-error">City is required</div>
+          </div>
+
+          <div class="field-block">
+            <label class="field-label" for="g-linkedin">LinkedIn URL</label>
+            <input type="url" id="g-linkedin" name="linkedin" placeholder="https://linkedin.com/in/..." />
+          </div>
+
+          <div class="field-block">
+            <label class="field-label" for="g-website">Personal Website / GitHub</label>
+            <input type="url" id="g-website" name="website" placeholder="https://..." />
+          </div>
+        </div>
+      </div>
+
+      <!-- Section 2: Qualifications -->
+      <div class="application-section" data-section="qualifications">
+        <div class="section-header" onclick="toggleSection(this)">
+          <h2>Qualifications</h2>
+          <span class="toggle-icon">&#9660;</span>
+        </div>
+        <div class="section-body">
+          <div class="field-block">
+            <label class="field-label">Resume <span class="req">*</span></label>
+            <div class="resume-dropzone" id="g-resume-zone">
+              <input type="file" id="g-resume" name="resume" accept=".pdf,.doc,.docx" />
+              <div class="dz-text">Drop your resume here or click to upload</div>
+              <div class="dz-filename" id="g-resume-name"></div>
+            </div>
+            <div class="field-error" id="g-resume-error">Resume is required</div>
+          </div>
+
+          <div class="field-row inline">
+            <div class="field-block">
+              <label class="field-label" for="g-experience">Experience <span class="req">*</span></label>
+              <select id="g-experience" name="experience" data-required="true">
+                <option value="">-- Select --</option>
+                <option value="intern">Intern / New Grad</option>
+                <option value="junior">1-3 years</option>
+                <option value="mid">3-5 years</option>
+                <option value="senior">5-10 years</option>
+                <option value="staff">10+ years</option>
+              </select>
+              <div class="field-error">Required</div>
+            </div>
+            <div class="field-block">
+              <label class="field-label" for="g-degree">Degree <span class="req">*</span></label>
+              <select id="g-degree" name="degree" data-required="true">
+                <option value="">-- Select --</option>
+                <option value="hs">High School</option>
+                <option value="assoc">Associate's</option>
+                <option value="bs">Bachelor's</option>
+                <option value="ms">Master's</option>
+                <option value="phd">PhD</option>
+              </select>
+              <div class="field-error">Required</div>
+            </div>
+          </div>
+
+          <div class="field-block">
+            <label class="field-label" for="g-school">University <span class="req">*</span></label>
+            <div class="async-typeahead" id="g-school-typeahead">
+              <input type="text" id="g-school" name="school" data-required="true" placeholder="Start typing to search..." autocomplete="off" />
+              <div class="typeahead-spinner" id="g-school-spinner"></div>
+              <ul class="typeahead-results" id="g-school-results"></ul>
+            </div>
+            <div class="field-error">University is required</div>
+          </div>
+
+          <div class="field-block">
+            <label class="field-label">Technical Skills <span class="req">*</span></label>
+            <div class="chip-select" id="g-skills">
+              <div class="chip" data-skill="js">JavaScript</div>
+              <div class="chip" data-skill="ts">TypeScript</div>
+              <div class="chip" data-skill="py">Python</div>
+              <div class="chip" data-skill="react">React</div>
+              <div class="chip" data-skill="node">Node.js</div>
+              <div class="chip" data-skill="sql">SQL</div>
+              <div class="chip" data-skill="git">Git</div>
+              <div class="chip" data-skill="docker">Docker</div>
+              <div class="chip" data-skill="aws">AWS</div>
+              <div class="chip" data-skill="graphql">GraphQL</div>
+            </div>
+            <input type="hidden" id="g-skills-value" name="skills" />
+            <div class="field-error" id="g-skills-error">Select at least one skill</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Section 3: Additional Info -->
+      <div class="application-section" data-section="additional">
+        <div class="section-header" onclick="toggleSection(this)">
+          <h2>Additional Information</h2>
+          <span class="toggle-icon">&#9660;</span>
+        </div>
+        <div class="section-body">
+          <div class="toggle-field">
+            <div class="toggle-switch" id="g-work-auth-toggle" data-field="workAuth" data-value="false" onclick="toggleSwitch(this)"></div>
+            <span class="toggle-label">I am authorized to work in the country of this position <span class="req">*</span></span>
+          </div>
+
+          <div class="conditional-block" id="g-visa-block">
+            <div class="toggle-field">
+              <div class="toggle-switch" id="g-visa-toggle" data-field="visa" data-value="false" onclick="toggleSwitch(this)"></div>
+              <span class="toggle-label">I will require visa sponsorship</span>
+            </div>
+          </div>
+
+          <div class="field-row inline">
+            <div class="field-block">
+              <label class="field-label" for="g-start-date">Available Start Date <span class="req">*</span></label>
+              <input type="date" id="g-start-date" name="startDate" data-required="true" />
+              <div class="field-error">Start date is required</div>
+            </div>
+            <div class="field-block">
+              <label class="field-label">Desired Salary (Annual USD)</label>
+              <div class="salary-slider-container">
+                <input type="range" id="g-salary" name="salary" min="30000" max="200000" step="5000" value="80000" oninput="updateSalaryDisplay(this.value)" />
+                <span class="salary-display" id="g-salary-display">$80,000</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="field-block">
+            <label class="field-label" for="g-source">How did you find this role? <span class="req">*</span></label>
+            <select id="g-source" name="source" data-required="true">
+              <option value="">-- Select --</option>
+              <option value="linkedin">LinkedIn</option>
+              <option value="website">Company Website</option>
+              <option value="board">Job Board</option>
+              <option value="referral">Referral</option>
+              <option value="university">University</option>
+              <option value="other">Other</option>
+            </select>
+            <div class="field-error">Required</div>
+          </div>
+
+          <div class="conditional-block" id="g-source-other-block">
+            <div class="field-block">
+              <label class="field-label" for="g-source-other">Please describe <span class="req">*</span></label>
+              <input type="text" id="g-source-other" name="sourceOther" />
+              <div class="field-error">Please specify</div>
+            </div>
+          </div>
+
+          <div class="field-block">
+            <label class="field-label" for="g-motivation">Why do you want to work at Globex? <span class="req">*</span></label>
+            <textarea id="g-motivation" name="motivation" data-required="true" maxlength="1500" placeholder="Tell us about yourself..."></textarea>
+            <div class="field-error">This field is required</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Submit -->
+      <div class="submit-area">
+        <div class="consent-row">
+          <input type="checkbox" id="g-consent" name="consent" />
+          <label for="g-consent">I confirm that the information provided is accurate and I consent to Globex processing my application data.</label>
+        </div>
+        <div class="field-error" id="g-consent-error" style="display:none;">You must agree to continue</div>
+        <button type="button" id="globex-submit" onclick="submitGlobexForm()">Submit Application</button>
+      </div>
+    </form>
+
+    <div class="globex-confirmation" id="globex-confirmation">
+      <div class="check-circle">&#10003;</div>
+      <h2>Application Received</h2>
+      <p>Thank you for applying to <strong>Frontend Engineer</strong> at Globex Corporation.</p>
+      <p>Our team will review your application shortly.</p>
+      <div class="ref-number" id="globex-ref">GX-000000</div>
+    </div>
+
+    <div class="globex-footer">
+      Powered by MockATS &mdash; Tsenta Take-Home Assessment
+    </div>
+  </div>
+
+  <script>
+    // =========================================
+    // Globex Corporation Form Logic
+    // =========================================
+
+    // Accordion sections
+    function toggleSection(header) {
+      const body = header.nextElementSibling;
+      const isOpen = header.classList.contains("open");
+      header.classList.toggle("open");
+      body.classList.toggle("open");
+    }
+
+    // Toggle switches (replace radio buttons)
+    function toggleSwitch(el) {
+      const isActive = el.classList.contains("active");
+      el.classList.toggle("active");
+      el.dataset.value = isActive ? "false" : "true";
+
+      // Show visa block when work auth is toggled on
+      if (el.id === "g-work-auth-toggle") {
+        const visaBlock = document.getElementById("g-visa-block");
+        visaBlock.classList.toggle("visible", !isActive);
+      }
+    }
+
+    // Chip selection (skills)
+    document.querySelectorAll("#g-skills .chip").forEach((chip) => {
+      chip.addEventListener("click", function () {
+        this.classList.toggle("selected");
+        updateSkillsValue();
+      });
+    });
+
+    function updateSkillsValue() {
+      const selected = Array.from(document.querySelectorAll("#g-skills .chip.selected")).map(
+        (c) => c.dataset.skill
+      );
+      document.getElementById("g-skills-value").value = selected.join(",");
+    }
+
+    // Salary slider display
+    function updateSalaryDisplay(val) {
+      document.getElementById("g-salary-display").textContent =
+        "$" + parseInt(val).toLocaleString();
+    }
+
+    // Resume filename
+    document.getElementById("g-resume").addEventListener("change", function () {
+      const name = this.files[0] ? this.files[0].name : "";
+      document.getElementById("g-resume-name").textContent = name;
+      if (name) {
+        document.getElementById("g-resume-zone").classList.add("uploaded");
+      }
+    });
+
+    // ── Async typeahead for University field ──
+    // Simulates a backend API: options are NOT in the DOM.
+    // Results arrive after a network delay and in shuffled order.
+    (function () {
+      const UNIVERSITY_DB = [
+        "Massachusetts Institute of Technology",
+        "Stanford University",
+        "University of California, Berkeley",
+        "Carnegie Mellon University",
+        "Georgia Institute of Technology",
+        "University of Michigan",
+        "University of Texas at Austin",
+        "University of Illinois Urbana-Champaign",
+        "Indian Institute of Technology Delhi",
+        "Indian Institute of Technology Bombay",
+        "Indian Institute of Technology Madras",
+        "Indian Institute of Technology Kanpur",
+        "BITS Pilani",
+        "Delhi Technological University",
+        "National Institute of Technology",
+        "University of Washington",
+        "Purdue University",
+        "Cornell University",
+        "Columbia University",
+        "Harvard University",
+        "University of Pennsylvania",
+        "Princeton University",
+        "Yale University",
+        "California Institute of Technology",
+        "University of California, Los Angeles",
+      ];
+
+      function shuffle(arr) {
+        const a = [...arr];
+        for (let i = a.length - 1; i > 0; i--) {
+          const j = Math.floor(Math.random() * (i + 1));
+          [a[i], a[j]] = [a[j], a[i]];
+        }
+        return a;
+      }
+
+      // Simulate an async API call with network latency + shuffled results
+      function searchUniversities(query) {
+        return new Promise(function (resolve) {
+          var delay = 300 + Math.floor(Math.random() * 500); // 300-800ms
+          setTimeout(function () {
+            var q = query.toLowerCase().trim();
+            var matches = UNIVERSITY_DB.filter(function (u) {
+              return u.toLowerCase().includes(q);
+            });
+            resolve(shuffle(matches).slice(0, 6));
+          }, delay);
+        });
+      }
+
+      var schoolInput = document.getElementById("g-school");
+      var resultsEl = document.getElementById("g-school-results");
+      var spinnerEl = document.getElementById("g-school-spinner");
+      var debounceTimer = null;
+      var currentQuery = "";
+
+      schoolInput.addEventListener("input", function () {
+        var query = this.value.trim();
+        currentQuery = query;
+
+        if (debounceTimer) clearTimeout(debounceTimer);
+
+        if (query.length < 2) {
+          resultsEl.classList.remove("open");
+          resultsEl.innerHTML = "";
+          spinnerEl.classList.remove("loading");
+          return;
+        }
+
+        spinnerEl.classList.add("loading");
+
+        debounceTimer = setTimeout(function () {
+          searchUniversities(query).then(function (results) {
+            // Only render if the query hasn't changed while we waited
+            if (schoolInput.value.trim() !== query) return;
+
+            spinnerEl.classList.remove("loading");
+            resultsEl.innerHTML = "";
+
+            if (results.length === 0) {
+              resultsEl.innerHTML = '<li class="typeahead-no-results">No universities found</li>';
+              resultsEl.classList.add("open");
+              return;
+            }
+
+            results.forEach(function (name) {
+              var li = document.createElement("li");
+              li.textContent = name;
+              li.addEventListener("click", function () {
+                schoolInput.value = name;
+                resultsEl.classList.remove("open");
+                resultsEl.innerHTML = "";
+                schoolInput.dispatchEvent(new Event("change"));
+              });
+              resultsEl.appendChild(li);
+            });
+            resultsEl.classList.add("open");
+          });
+        }, 150); // debounce
+      });
+
+      // Close dropdown when clicking outside
+      document.addEventListener("click", function (e) {
+        if (!schoolInput.contains(e.target) && !resultsEl.contains(e.target)) {
+          resultsEl.classList.remove("open");
+        }
+      });
+
+      // Keyboard navigation
+      schoolInput.addEventListener("keydown", function (e) {
+        var items = resultsEl.querySelectorAll("li:not(.typeahead-no-results)");
+        if (items.length === 0) return;
+
+        var current = resultsEl.querySelector("li.highlighted");
+        var index = current ? Array.from(items).indexOf(current) : -1;
+
+        if (e.key === "ArrowDown") {
+          e.preventDefault();
+          if (current) current.classList.remove("highlighted");
+          index = (index + 1) % items.length;
+          items[index].classList.add("highlighted");
+        } else if (e.key === "ArrowUp") {
+          e.preventDefault();
+          if (current) current.classList.remove("highlighted");
+          index = index <= 0 ? items.length - 1 : index - 1;
+          items[index].classList.add("highlighted");
+        } else if (e.key === "Enter") {
+          e.preventDefault();
+          if (current) {
+            schoolInput.value = current.textContent;
+            resultsEl.classList.remove("open");
+            resultsEl.innerHTML = "";
+            schoolInput.dispatchEvent(new Event("change"));
+          }
+        }
+      });
+    })();
+
+    // Source "other" conditional
+    document.getElementById("g-source").addEventListener("change", function () {
+      const otherBlock = document.getElementById("g-source-other-block");
+      otherBlock.classList.toggle("visible", this.value === "other");
+    });
+
+    // Form validation
+    function validateGlobexForm() {
+      let valid = true;
+
+      // Clear previous errors
+      document.querySelectorAll(".field-block.invalid").forEach((b) => b.classList.remove("invalid"));
+
+      // Required text/email/tel/date inputs
+      document.querySelectorAll("#globex-form [data-required='true']").forEach((input) => {
+        if (!input.value || !input.value.trim()) {
+          input.closest(".field-block").classList.add("invalid");
+          valid = false;
+        }
+      });
+
+      // Email format
+      const email = document.getElementById("g-email");
+      if (email.value && !email.value.match(/^[^\s@]+@[^\s@]+\.[^\s@]+$/)) {
+        email.closest(".field-block").classList.add("invalid");
+        valid = false;
+      }
+
+      // Resume
+      const resume = document.getElementById("g-resume");
+      if (!resume.files || resume.files.length === 0) {
+        document.getElementById("g-resume-error").style.display = "block";
+        valid = false;
+      } else {
+        document.getElementById("g-resume-error").style.display = "none";
+      }
+
+      // Skills (at least one chip selected)
+      const selectedSkills = document.querySelectorAll("#g-skills .chip.selected");
+      if (selectedSkills.length === 0) {
+        document.getElementById("g-skills-error").style.display = "block";
+        valid = false;
+      } else {
+        document.getElementById("g-skills-error").style.display = "none";
+      }
+
+      // Work auth toggle
+      const workAuth = document.getElementById("g-work-auth-toggle");
+      if (workAuth.dataset.value !== "true") {
+        // Not strictly invalid but we'll allow it — just a toggle
+      }
+
+      // Consent checkbox
+      const consent = document.getElementById("g-consent");
+      if (!consent.checked) {
+        document.getElementById("g-consent-error").style.display = "block";
+        valid = false;
+      } else {
+        document.getElementById("g-consent-error").style.display = "none";
+      }
+
+      return valid;
+    }
+
+    // Submit
+    function submitGlobexForm() {
+      // Open all sections first so validation is visible
+      document.querySelectorAll(".section-header:not(.open)").forEach((h) => toggleSection(h));
+
+      if (!validateGlobexForm()) return;
+
+      const btn = document.getElementById("globex-submit");
+      btn.disabled = true;
+      btn.textContent = "Submitting...";
+
+      setTimeout(() => {
+        const ref = "GX-" + Date.now().toString(36).toUpperCase() + "-" + Math.random().toString(36).substring(2, 5).toUpperCase();
+        document.getElementById("globex-ref").textContent = ref;
+
+        document.getElementById("globex-form").style.display = "none";
+        document.getElementById("globex-confirmation").style.display = "block";
+      }, 2000);
+    }
+  </script>
+</body>
+</html>

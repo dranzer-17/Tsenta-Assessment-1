@@ -1,0 +1,18 @@
+{
+  "name": "tsenta-take-home",
+  "version": "1.0.0",
+  "description": "Tsenta Engineering Intern - Take-Home Assessment",
+  "private": true,
+  "scripts": {
+    "serve": "npx serve mock-ats -p 3939",
+    "start": "npx tsx src/automator.ts"
+  },
+  "dependencies": {
+    "playwright": "^1.52.0"
+  },
+  "devDependencies": {
+    "typescript": "^5.7.0",
+    "tsx": "^4.19.0",
+    "serve": "^14.2.0"
+  }
+}

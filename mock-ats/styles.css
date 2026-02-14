@@ -1,0 +1,488 @@
+/* =========================================
+   MockATS - Job Application Form Styles
+   ========================================= */
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  background: #f5f5f7;
+  color: #1d1d1f;
+  line-height: 1.6;
+}
+
+.app-container {
+  max-width: 720px;
+  margin: 0 auto;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Header */
+.ats-header {
+  background: #1a1a2e;
+  color: white;
+  padding: 24px 32px;
+  text-align: center;
+}
+
+.logo {
+  font-size: 24px;
+  font-weight: 700;
+  letter-spacing: -0.5px;
+}
+
+.job-title-header {
+  font-size: 14px;
+  opacity: 0.8;
+  margin-top: 4px;
+}
+
+/* Progress Bar */
+.progress-bar {
+  display: flex;
+  justify-content: center;
+  gap: 8px;
+  padding: 24px 16px;
+  background: white;
+  border-bottom: 1px solid #e5e5e5;
+}
+
+.progress-step {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 14px;
+  border-radius: 20px;
+  font-size: 13px;
+  color: #999;
+  transition: all 0.2s;
+}
+
+.progress-step .step-number {
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  background: #e5e5e5;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 11px;
+  font-weight: 600;
+}
+
+.progress-step.active {
+  color: #1a1a2e;
+  background: #f0f0ff;
+}
+
+.progress-step.active .step-number {
+  background: #1a1a2e;
+  color: white;
+}
+
+.progress-step.completed .step-number {
+  background: #34c759;
+  color: white;
+}
+
+.progress-step.completed {
+  color: #34c759;
+}
+
+/* Form */
+.form-wrapper {
+  flex: 1;
+  background: white;
+}
+
+.form-step {
+  display: none;
+  padding: 32px;
+  animation: fadeIn 0.3s ease;
+}
+
+.form-step.active {
+  display: block;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(8px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+h2 {
+  font-size: 22px;
+  font-weight: 600;
+  margin-bottom: 24px;
+  color: #1a1a2e;
+}
+
+.form-group {
+  margin-bottom: 20px;
+}
+
+.form-group label {
+  display: block;
+  font-size: 14px;
+  font-weight: 500;
+  margin-bottom: 6px;
+  color: #333;
+}
+
+.required {
+  color: #ff3b30;
+}
+
+input[type="text"],
+input[type="email"],
+input[type="tel"],
+input[type="url"],
+input[type="date"],
+select,
+textarea {
+  width: 100%;
+  padding: 10px 14px;
+  border: 1.5px solid #d1d1d6;
+  border-radius: 8px;
+  font-size: 15px;
+  font-family: inherit;
+  transition: border-color 0.2s, box-shadow 0.2s;
+  background: white;
+}
+
+input:focus,
+select:focus,
+textarea:focus {
+  outline: none;
+  border-color: #1a1a2e;
+  box-shadow: 0 0 0 3px rgba(26, 26, 46, 0.1);
+}
+
+textarea {
+  resize: vertical;
+  min-height: 100px;
+}
+
+.char-count {
+  font-size: 12px;
+  color: #999;
+  text-align: right;
+  margin-top: 4px;
+}
+
+/* Error States */
+.has-error input,
+.has-error select,
+.has-error textarea {
+  border-color: #ff3b30;
+}
+
+.error-message {
+  display: block;
+  font-size: 13px;
+  color: #ff3b30;
+  margin-top: 4px;
+  min-height: 18px;
+}
+
+/* File Upload */
+.file-upload-area {
+  position: relative;
+  border: 2px dashed #d1d1d6;
+  border-radius: 8px;
+  padding: 24px;
+  text-align: center;
+  cursor: pointer;
+  transition: border-color 0.2s, background 0.2s;
+}
+
+.file-upload-area:hover {
+  border-color: #1a1a2e;
+  background: #f8f8ff;
+}
+
+.file-upload-area.has-file {
+  border-color: #34c759;
+  background: #f0fdf4;
+}
+
+.file-upload-area input[type="file"] {
+  position: absolute;
+  inset: 0;
+  opacity: 0;
+  cursor: pointer;
+}
+
+.file-upload-label {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  color: #666;
+  font-size: 14px;
+}
+
+.upload-icon {
+  font-size: 28px;
+}
+
+.file-types {
+  font-size: 12px;
+  color: #999;
+}
+
+.file-name {
+  margin-top: 8px;
+  font-size: 14px;
+  font-weight: 500;
+  color: #1a1a2e;
+}
+
+/* Checkbox & Radio Groups */
+.checkbox-group,
+.radio-group {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.checkbox-label,
+.radio-label {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 8px 14px;
+  border: 1.5px solid #d1d1d6;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 14px;
+  transition: all 0.2s;
+}
+
+.checkbox-label:hover,
+.radio-label:hover {
+  border-color: #1a1a2e;
+  background: #f8f8ff;
+}
+
+.checkbox-label:has(input:checked),
+.radio-label:has(input:checked) {
+  border-color: #1a1a2e;
+  background: #f0f0ff;
+}
+
+.consent-label {
+  border: none;
+  padding: 0;
+}
+
+.consent-label:hover {
+  background: none;
+}
+
+/* Typeahead */
+.typeahead-container {
+  position: relative;
+}
+
+.typeahead-dropdown {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  right: 0;
+  background: white;
+  border: 1.5px solid #d1d1d6;
+  border-top: none;
+  border-radius: 0 0 8px 8px;
+  list-style: none;
+  max-height: 200px;
+  overflow-y: auto;
+  display: none;
+  z-index: 100;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.typeahead-dropdown li {
+  padding: 10px 14px;
+  cursor: pointer;
+  font-size: 14px;
+  transition: background 0.15s;
+}
+
+.typeahead-dropdown li:hover {
+  background: #f0f0ff;
+}
+
+/* Buttons */
+.form-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 12px;
+  margin-top: 32px;
+  padding-top: 24px;
+  border-top: 1px solid #e5e5e5;
+}
+
+.btn {
+  padding: 10px 28px;
+  border: none;
+  border-radius: 8px;
+  font-size: 15px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.btn-primary {
+  background: #1a1a2e;
+  color: white;
+}
+
+.btn-primary:hover {
+  background: #2a2a4e;
+}
+
+.btn-secondary {
+  background: #e5e5e5;
+  color: #333;
+}
+
+.btn-secondary:hover {
+  background: #d5d5d5;
+}
+
+.btn-submit {
+  background: #34c759;
+  color: white;
+  padding: 12px 36px;
+  font-size: 16px;
+}
+
+.btn-submit:hover {
+  background: #2db84d;
+}
+
+.btn-submit:disabled {
+  background: #999;
+  cursor: not-allowed;
+}
+
+/* Review Page */
+.review-instructions {
+  color: #666;
+  margin-bottom: 20px;
+  font-size: 14px;
+}
+
+.review-block {
+  margin-bottom: 24px;
+  padding: 16px;
+  background: #f8f8fa;
+  border-radius: 8px;
+}
+
+.review-block h3 {
+  font-size: 15px;
+  font-weight: 600;
+  margin-bottom: 12px;
+  color: #1a1a2e;
+}
+
+.review-row {
+  display: flex;
+  gap: 8px;
+  padding: 4px 0;
+  font-size: 14px;
+}
+
+.review-label {
+  font-weight: 500;
+  color: #666;
+  min-width: 140px;
+}
+
+.review-value {
+  color: #333;
+}
+
+/* Success Page */
+.success-page {
+  padding: 64px 32px;
+  text-align: center;
+}
+
+.success-content {
+  max-width: 480px;
+  margin: 0 auto;
+}
+
+.success-icon {
+  width: 72px;
+  height: 72px;
+  background: #34c759;
+  color: white;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 36px;
+  margin: 0 auto 24px;
+}
+
+.success-page h2 {
+  color: #34c759;
+  margin-bottom: 12px;
+}
+
+.success-page p {
+  color: #666;
+  margin-bottom: 8px;
+}
+
+.confirmation-id {
+  margin-top: 24px;
+  padding: 12px;
+  background: #f0f0ff;
+  border-radius: 8px;
+  font-family: "SF Mono", Monaco, monospace;
+  font-size: 14px;
+}
+
+/* Footer */
+.ats-footer {
+  padding: 16px;
+  text-align: center;
+  font-size: 12px;
+  color: #999;
+  border-top: 1px solid #e5e5e5;
+  background: white;
+}
+
+/* Demographics section */
+.demographics-section {
+  margin-top: 12px;
+  padding: 16px;
+  background: #f8f8fa;
+  border-radius: 8px;
+}
+
+/* Responsive */
+@media (max-width: 600px) {
+  .form-step {
+    padding: 20px 16px;
+  }
+
+  .progress-step .step-label {
+    display: none;
+  }
+
+  .checkbox-group,
+  .radio-group {
+    flex-direction: column;
+  }
+}

@@ -1,0 +1,608 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Acme Corp - Software Engineer Application</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <div class="app-container">
+    <header class="ats-header">
+      <div class="logo">Acme Corp</div>
+      <div class="job-title-header">Software Engineer</div>
+    </header>
+
+    <main class="form-wrapper">
+      <div class="progress-bar">
+        <div class="progress-step active" data-step="1">
+          <span class="step-number">1</span>
+          <span class="step-label">Personal Info</span>
+        </div>
+        <div class="progress-step" data-step="2">
+          <span class="step-number">2</span>
+          <span class="step-label">Experience</span>
+        </div>
+        <div class="progress-step" data-step="3">
+          <span class="step-number">3</span>
+          <span class="step-label">Questions</span>
+        </div>
+        <div class="progress-step" data-step="4">
+          <span class="step-number">4</span>
+          <span class="step-label">Review</span>
+        </div>
+      </div>
+
+      <!-- Step 1: Personal Information -->
+      <form id="application-form">
+        <section class="form-step active" data-step="1">
+          <h2>Personal Information</h2>
+
+          <div class="form-group">
+            <label for="first-name">First Name <span class="required">*</span></label>
+            <input type="text" id="first-name" name="firstName" required placeholder="Enter your first name" />
+            <span class="error-message" data-for="first-name"></span>
+          </div>
+
+          <div class="form-group">
+            <label for="last-name">Last Name <span class="required">*</span></label>
+            <input type="text" id="last-name" name="lastName" required placeholder="Enter your last name" />
+            <span class="error-message" data-for="last-name"></span>
+          </div>
+
+          <div class="form-group">
+            <label for="email">Email Address <span class="required">*</span></label>
+            <input type="email" id="email" name="email" required placeholder="you@example.com" />
+            <span class="error-message" data-for="email"></span>
+          </div>
+
+          <div class="form-group">
+            <label for="phone">Phone Number <span class="required">*</span></label>
+            <input type="tel" id="phone" name="phone" required placeholder="+1 (555) 000-0000" />
+            <span class="error-message" data-for="phone"></span>
+          </div>
+
+          <div class="form-group">
+            <label for="location">Current Location <span class="required">*</span></label>
+            <input type="text" id="location" name="location" required placeholder="City, State/Country" />
+            <span class="error-message" data-for="location"></span>
+          </div>
+
+          <div class="form-group">
+            <label for="linkedin">LinkedIn Profile</label>
+            <input type="url" id="linkedin" name="linkedin" placeholder="https://linkedin.com/in/yourprofile" />
+          </div>
+
+          <div class="form-group">
+            <label for="portfolio">Portfolio / GitHub</label>
+            <input type="url" id="portfolio" name="portfolio" placeholder="https://github.com/yourusername" />
+          </div>
+
+          <div class="form-actions">
+            <button type="button" class="btn btn-primary" onclick="nextStep(1)">Continue</button>
+          </div>
+        </section>
+
+        <!-- Step 2: Experience & Education -->
+        <section class="form-step" data-step="2">
+          <h2>Experience & Education</h2>
+
+          <div class="form-group">
+            <label for="resume">Resume / CV <span class="required">*</span></label>
+            <div class="file-upload-area" id="resume-upload-area">
+              <input type="file" id="resume" name="resume" accept=".pdf,.doc,.docx" required />
+              <div class="file-upload-label">
+                <span class="upload-icon">&#128206;</span>
+                <span>Drag & drop your resume or <strong>click to browse</strong></span>
+                <span class="file-types">PDF, DOC, DOCX (max 5MB)</span>
+              </div>
+              <div class="file-name" id="resume-file-name"></div>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label for="experience-level">Years of Experience <span class="required">*</span></label>
+            <select id="experience-level" name="experienceLevel" required>
+              <option value="" disabled selected>Select experience level</option>
+              <option value="0-1">0-1 years (New Grad / Intern)</option>
+              <option value="1-3">1-3 years</option>
+              <option value="3-5">3-5 years</option>
+              <option value="5-10">5-10 years</option>
+              <option value="10+">10+ years</option>
+            </select>
+          </div>
+
+          <div class="form-group">
+            <label for="education">Highest Education <span class="required">*</span></label>
+            <select id="education" name="education" required>
+              <option value="" disabled selected>Select education level</option>
+              <option value="high-school">High School</option>
+              <option value="associates">Associate's Degree</option>
+              <option value="bachelors">Bachelor's Degree</option>
+              <option value="masters">Master's Degree</option>
+              <option value="phd">PhD / Doctorate</option>
+            </select>
+          </div>
+
+          <div class="form-group">
+            <label for="school">School / University <span class="required">*</span></label>
+            <div class="typeahead-container">
+              <input type="text" id="school" name="school" required placeholder="Start typing your school name..." autocomplete="off" />
+              <ul class="typeahead-dropdown" id="school-dropdown"></ul>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label>Skills (select all that apply) <span class="required">*</span></label>
+            <div class="checkbox-group" id="skills-group">
+              <label class="checkbox-label">
+                <input type="checkbox" name="skills" value="javascript" /> JavaScript
+              </label>
+              <label class="checkbox-label">
+                <input type="checkbox" name="skills" value="typescript" /> TypeScript
+              </label>
+              <label class="checkbox-label">
+                <input type="checkbox" name="skills" value="python" /> Python
+              </label>
+              <label class="checkbox-label">
+                <input type="checkbox" name="skills" value="react" /> React
+              </label>
+              <label class="checkbox-label">
+                <input type="checkbox" name="skills" value="nodejs" /> Node.js
+              </label>
+              <label class="checkbox-label">
+                <input type="checkbox" name="skills" value="sql" /> SQL
+              </label>
+              <label class="checkbox-label">
+                <input type="checkbox" name="skills" value="git" /> Git
+              </label>
+              <label class="checkbox-label">
+                <input type="checkbox" name="skills" value="docker" /> Docker
+              </label>
+            </div>
+            <span class="error-message" data-for="skills"></span>
+          </div>
+
+          <div class="form-actions">
+            <button type="button" class="btn btn-secondary" onclick="prevStep(2)">Back</button>
+            <button type="button" class="btn btn-primary" onclick="nextStep(2)">Continue</button>
+          </div>
+        </section>
+
+        <!-- Step 3: Additional Questions -->
+        <section class="form-step" data-step="3">
+          <h2>Additional Questions</h2>
+
+          <div class="form-group">
+            <label for="work-auth">Are you authorized to work in the country of this position? <span class="required">*</span></label>
+            <div class="radio-group">
+              <label class="radio-label">
+                <input type="radio" name="workAuth" value="yes" required /> Yes
+              </label>
+              <label class="radio-label">
+                <input type="radio" name="workAuth" value="no" /> No
+              </label>
+            </div>
+          </div>
+
+          <div class="form-group" id="visa-sponsorship-group" style="display: none;">
+            <label for="visa-sponsorship">Will you require visa sponsorship now or in the future?</label>
+            <div class="radio-group">
+              <label class="radio-label">
+                <input type="radio" name="visaSponsorship" value="yes" /> Yes
+              </label>
+              <label class="radio-label">
+                <input type="radio" name="visaSponsorship" value="no" /> No
+              </label>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label for="start-date">Earliest Start Date <span class="required">*</span></label>
+            <input type="date" id="start-date" name="startDate" required />
+          </div>
+
+          <div class="form-group">
+            <label for="salary-expectation">Salary Expectation (Annual, USD)</label>
+            <input type="text" id="salary-expectation" name="salaryExpectation" placeholder="e.g. 80000" />
+          </div>
+
+          <div class="form-group">
+            <label for="referral">How did you hear about this position? <span class="required">*</span></label>
+            <select id="referral" name="referral" required>
+              <option value="" disabled selected>Select one</option>
+              <option value="linkedin">LinkedIn</option>
+              <option value="company-website">Company Website</option>
+              <option value="job-board">Job Board (Indeed, etc.)</option>
+              <option value="referral">Employee Referral</option>
+              <option value="university">University / Career Fair</option>
+              <option value="other">Other</option>
+            </select>
+          </div>
+
+          <div class="form-group" id="referral-other-group" style="display: none;">
+            <label for="referral-other">Please specify <span class="required">*</span></label>
+            <input type="text" id="referral-other" name="referralOther" placeholder="How did you hear about us?" />
+          </div>
+
+          <div class="form-group">
+            <label for="cover-letter">Why are you interested in this role? <span class="required">*</span></label>
+            <textarea id="cover-letter" name="coverLetter" required rows="5" placeholder="Tell us why you'd be a great fit..." maxlength="2000"></textarea>
+            <div class="char-count"><span id="cover-letter-count">0</span> / 2000</div>
+          </div>
+
+          <div class="form-group">
+            <label class="checkbox-label consent-label">
+              <input type="checkbox" id="gender-consent" name="genderConsent" />
+              I consent to voluntarily provide demographic information (optional)
+            </label>
+          </div>
+
+          <div class="form-group demographics-section" id="demographics-section" style="display: none;">
+            <label for="gender">Gender</label>
+            <select id="gender" name="gender">
+              <option value="" disabled selected>Prefer not to say</option>
+              <option value="male">Male</option>
+              <option value="female">Female</option>
+              <option value="non-binary">Non-binary</option>
+              <option value="other">Other</option>
+              <option value="prefer-not">Prefer not to say</option>
+            </select>
+          </div>
+
+          <div class="form-actions">
+            <button type="button" class="btn btn-secondary" onclick="prevStep(3)">Back</button>
+            <button type="button" class="btn btn-primary" onclick="nextStep(3)">Continue</button>
+          </div>
+        </section>
+
+        <!-- Step 4: Review & Submit -->
+        <section class="form-step" data-step="4">
+          <h2>Review Your Application</h2>
+          <p class="review-instructions">Please review your information before submitting.</p>
+
+          <div class="review-section" id="review-content">
+            <!-- Populated dynamically -->
+          </div>
+
+          <div class="form-group">
+            <label class="checkbox-label consent-label">
+              <input type="checkbox" id="terms-agree" name="termsAgree" required />
+              I certify that the information provided is accurate and complete. <span class="required">*</span>
+            </label>
+            <span class="error-message" data-for="terms-agree"></span>
+          </div>
+
+          <div class="form-actions">
+            <button type="button" class="btn btn-secondary" onclick="prevStep(4)">Back</button>
+            <button type="submit" class="btn btn-submit" id="submit-btn">Submit Application</button>
+          </div>
+        </section>
+      </form>
+
+      <!-- Success Page -->
+      <section class="success-page" id="success-page" style="display: none;">
+        <div class="success-content">
+          <div class="success-icon">&#10003;</div>
+          <h2>Application Submitted!</h2>
+          <p>Thank you for applying to <strong>Software Engineer</strong> at <strong>Acme Corp</strong>.</p>
+          <p>We'll review your application and get back to you within 5-7 business days.</p>
+          <p class="confirmation-id">Confirmation ID: <span id="confirmation-id"></span></p>
+        </div>
+      </section>
+    </main>
+
+    <footer class="ats-footer">
+      <p>Powered by MockATS &mdash; Tsenta Take-Home Assessment</p>
+    </footer>
+  </div>
+
+  <script>
+    // =========================================
+    // MockATS Application Form Logic
+    // =========================================
+
+    const SCHOOLS = [
+      "Massachusetts Institute of Technology",
+      "Stanford University",
+      "University of California, Berkeley",
+      "Carnegie Mellon University",
+      "Georgia Institute of Technology",
+      "University of Michigan",
+      "University of Texas at Austin",
+      "University of Illinois Urbana-Champaign",
+      "Indian Institute of Technology Delhi",
+      "Indian Institute of Technology Bombay",
+      "Indian Institute of Technology Madras",
+      "Indian Institute of Technology Kanpur",
+      "BITS Pilani",
+      "Delhi Technological University",
+      "National Institute of Technology",
+      "University of Washington",
+      "Purdue University",
+      "Cornell University",
+      "Columbia University",
+      "Harvard University",
+      "University of Pennsylvania",
+      "Princeton University",
+      "Yale University",
+      "California Institute of Technology",
+      "University of California, Los Angeles",
+    ];
+
+    let currentStep = 1;
+
+    // Typeahead for school field
+    const schoolInput = document.getElementById("school");
+    const schoolDropdown = document.getElementById("school-dropdown");
+
+    schoolInput.addEventListener("input", function () {
+      const query = this.value.toLowerCase().trim();
+      schoolDropdown.innerHTML = "";
+
+      if (query.length < 2) {
+        schoolDropdown.style.display = "none";
+        return;
+      }
+
+      const matches = SCHOOLS.filter((s) => s.toLowerCase().includes(query));
+      if (matches.length === 0) {
+        schoolDropdown.style.display = "none";
+        return;
+      }
+
+      matches.slice(0, 5).forEach((match) => {
+        const li = document.createElement("li");
+        li.textContent = match;
+        li.addEventListener("click", function () {
+          schoolInput.value = match;
+          schoolDropdown.style.display = "none";
+          schoolInput.dispatchEvent(new Event("change"));
+        });
+        schoolDropdown.appendChild(li);
+      });
+      schoolDropdown.style.display = "block";
+    });
+
+    document.addEventListener("click", function (e) {
+      if (!schoolInput.contains(e.target) && !schoolDropdown.contains(e.target)) {
+        schoolDropdown.style.display = "none";
+      }
+    });
+
+    // Conditional field visibility
+    document.querySelectorAll('input[name="workAuth"]').forEach((radio) => {
+      radio.addEventListener("change", function () {
+        const visaGroup = document.getElementById("visa-sponsorship-group");
+        visaGroup.style.display = this.value === "yes" ? "block" : "none";
+      });
+    });
+
+    document.getElementById("referral").addEventListener("change", function () {
+      const otherGroup = document.getElementById("referral-other-group");
+      otherGroup.style.display = this.value === "other" ? "block" : "none";
+    });
+
+    document.getElementById("gender-consent").addEventListener("change", function () {
+      const demoSection = document.getElementById("demographics-section");
+      demoSection.style.display = this.checked ? "block" : "none";
+    });
+
+    // Character count for cover letter
+    document.getElementById("cover-letter").addEventListener("input", function () {
+      document.getElementById("cover-letter-count").textContent = this.value.length;
+    });
+
+    // Resume file name display
+    document.getElementById("resume").addEventListener("change", function () {
+      const fileName = this.files[0] ? this.files[0].name : "";
+      document.getElementById("resume-file-name").textContent = fileName;
+      if (fileName) {
+        document.getElementById("resume-upload-area").classList.add("has-file");
+      }
+    });
+
+    // Form validation per step
+    function validateStep(step) {
+      let valid = true;
+
+      // Clear previous errors
+      document.querySelectorAll(`.form-step[data-step="${step}"] .error-message`).forEach((el) => {
+        el.textContent = "";
+      });
+      document.querySelectorAll(`.form-step[data-step="${step}"] .form-group`).forEach((el) => {
+        el.classList.remove("has-error");
+      });
+
+      const section = document.querySelector(`.form-step[data-step="${step}"]`);
+
+      // Validate required text/email/tel/url inputs
+      section.querySelectorAll("input[required]:not([type='checkbox']):not([type='radio']):not([type='file'])").forEach((input) => {
+        if (!input.value.trim()) {
+          showError(input, "This field is required");
+          valid = false;
+        } else if (input.type === "email" && !input.value.match(/^[^\s@]+@[^\s@]+\.[^\s@]+$/)) {
+          showError(input, "Please enter a valid email address");
+          valid = false;
+        }
+      });
+
+      // Validate required selects
+      section.querySelectorAll("select[required]").forEach((select) => {
+        if (!select.value) {
+          showError(select, "Please select an option");
+          valid = false;
+        }
+      });
+
+      // Validate required textareas
+      section.querySelectorAll("textarea[required]").forEach((textarea) => {
+        if (!textarea.value.trim()) {
+          showError(textarea, "This field is required");
+          valid = false;
+        }
+      });
+
+      // Validate required radio groups
+      if (step === 3) {
+        const workAuth = document.querySelector('input[name="workAuth"]:checked');
+        if (!workAuth) {
+          const radioGroup = document.querySelector('input[name="workAuth"]').closest(".form-group");
+          radioGroup.classList.add("has-error");
+          valid = false;
+        }
+      }
+
+      // Validate required checkboxes (skills - at least one)
+      if (step === 2) {
+        const checkedSkills = section.querySelectorAll('input[name="skills"]:checked');
+        if (checkedSkills.length === 0) {
+          const errorEl = section.querySelector('[data-for="skills"]');
+          if (errorEl) {
+            errorEl.textContent = "Please select at least one skill";
+          }
+          valid = false;
+        }
+      }
+
+      // Validate file upload
+      if (step === 2) {
+        const resume = document.getElementById("resume");
+        if (!resume.files || resume.files.length === 0) {
+          showError(resume, "Please upload your resume");
+          valid = false;
+        }
+      }
+
+      // Validate terms checkbox on step 4
+      if (step === 4) {
+        const terms = document.getElementById("terms-agree");
+        if (!terms.checked) {
+          const errorEl = section.querySelector('[data-for="terms-agree"]');
+          if (errorEl) {
+            errorEl.textContent = "You must agree to continue";
+          }
+          valid = false;
+        }
+      }
+
+      return valid;
+    }
+
+    function showError(input, message) {
+      const group = input.closest(".form-group");
+      group.classList.add("has-error");
+      const errorEl = group.querySelector(".error-message");
+      if (errorEl) {
+        errorEl.textContent = message;
+      }
+    }
+
+    // Step navigation
+    function nextStep(from) {
+      if (!validateStep(from)) return;
+
+      if (from === 3) {
+        buildReviewPage();
+      }
+
+      currentStep = from + 1;
+      updateSteps();
+    }
+
+    function prevStep(from) {
+      currentStep = from - 1;
+      updateSteps();
+    }
+
+    function updateSteps() {
+      document.querySelectorAll(".form-step").forEach((step) => {
+        step.classList.remove("active");
+      });
+      document.querySelector(`.form-step[data-step="${currentStep}"]`).classList.add("active");
+
+      document.querySelectorAll(".progress-step").forEach((step) => {
+        const stepNum = parseInt(step.dataset.step);
+        step.classList.toggle("active", stepNum === currentStep);
+        step.classList.toggle("completed", stepNum < currentStep);
+      });
+
+      window.scrollTo({ top: 0, behavior: "smooth" });
+    }
+
+    // Build review page from form data
+    function buildReviewPage() {
+      const review = document.getElementById("review-content");
+      const form = document.getElementById("application-form");
+      const data = new FormData(form);
+
+      const sections = [
+        {
+          title: "Personal Information",
+          fields: [
+            { label: "Name", value: `${data.get("firstName")} ${data.get("lastName")}` },
+            { label: "Email", value: data.get("email") },
+            { label: "Phone", value: data.get("phone") },
+            { label: "Location", value: data.get("location") },
+            { label: "LinkedIn", value: data.get("linkedin") || "Not provided" },
+            { label: "Portfolio", value: data.get("portfolio") || "Not provided" },
+          ],
+        },
+        {
+          title: "Experience & Education",
+          fields: [
+            { label: "Resume", value: document.getElementById("resume").files[0]?.name || "Not uploaded" },
+            { label: "Experience", value: data.get("experienceLevel") },
+            { label: "Education", value: data.get("education") },
+            { label: "School", value: data.get("school") },
+            { label: "Skills", value: data.getAll("skills").join(", ") },
+          ],
+        },
+        {
+          title: "Additional Information",
+          fields: [
+            { label: "Work Authorization", value: data.get("workAuth") },
+            { label: "Start Date", value: data.get("startDate") },
+            { label: "Salary Expectation", value: data.get("salaryExpectation") || "Not specified" },
+            { label: "Referral Source", value: data.get("referral") },
+          ],
+        },
+      ];
+
+      review.innerHTML = sections
+        .map(
+          (section) => `
+        <div class="review-block">
+          <h3>${section.title}</h3>
+          ${section.fields.map((f) => `<div class="review-row"><span class="review-label">${f.label}:</span> <span class="review-value">${f.value || "—"}</span></div>`).join("")}
+        </div>
+      `
+        )
+        .join("");
+    }
+
+    // Form submission
+    document.getElementById("application-form").addEventListener("submit", function (e) {
+      e.preventDefault();
+
+      if (!validateStep(4)) return;
+
+      // Simulate submission delay
+      const submitBtn = document.getElementById("submit-btn");
+      submitBtn.disabled = true;
+      submitBtn.textContent = "Submitting...";
+
+      setTimeout(() => {
+        // Generate confirmation ID
+        const confirmId = "ACM-" + Date.now().toString(36).toUpperCase() + "-" + Math.random().toString(36).substring(2, 6).toUpperCase();
+        document.getElementById("confirmation-id").textContent = confirmId;
+
+        // Show success page
+        document.querySelector(".form-wrapper .progress-bar").style.display = "none";
+        document.getElementById("application-form").style.display = "none";
+        document.getElementById("success-page").style.display = "block";
+      }, 1500);
+    });
+  </script>
+</body>
+</html>
